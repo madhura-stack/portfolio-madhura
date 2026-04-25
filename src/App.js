@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Mail, Menu, X, Sun, Moon } from "lucide-react";
 import { motion } from "framer-motion";
 
-/* ✅ FIX 1: Move roles OUTSIDE */
+/* ✅ move roles outside to fix ESLint */
 const roles = [
   "Full Stack Developer",
   "AI Enthusiast",
@@ -13,6 +13,7 @@ export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [typedText, setTypedText] = useState("");
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     let roleIndex = 0;
@@ -67,20 +68,48 @@ export default function Portfolio() {
       title: "Driver Drowsiness Detection",
       category: "AI",
       description:
-        "Real-time system to detect driver fatigue using computer vision.",
+        "Real-time model to detect driver fatigue using computer vision.",
       tech: "Python, OpenCV, Mediapipe",
       github: "https://github.com/madhura-stack/Driver_Drowsiness_Detection",
     },
+    {
+      title: "DeepFake Guard",
+      category: "Machine Learning",
+      description:
+        "Real-time multimedia manipulation detection system.",
+      tech: "Python, ML, OpenCV",
+      github: "https://github.com/madhura-stack/Realtime-deepfake_detection",
+    },
+    {
+      title: "Skin Disease Detection",
+      category: "Machine Learning",
+      description:
+        "Deep learning-based skin disease detection system.",
+      tech: "Python, ML",
+      github: "https://github.com/madhura-stack/Skin_disease_detection",
+    },
+    {
+      title: "AI Book Recommendation",
+      category: "AI",
+      description:
+        "AI-based system to recommend books based on user interest.",
+      tech: "Python, AI",
+      github: "https://github.com/madhura-stack/AI_Book_Recommendation_System",
+    },
   ];
 
-
+  /* ✅ filter is used → no error */
+  const filteredProjects =
+    filter === "All"
+      ? projects
+      : projects.filter(p => p.category === filter);
 
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"} px-6 md:px-24`}>
 
       {/* NAVBAR */}
       <nav className="flex justify-between items-center py-6">
-        <h1 className="text-2xl font-bold">Madhura.dev</h1>
+        <h1 className="text-2xl font-bold">Madhura G R.dev</h1>
 
         <div className="hidden md:flex gap-8">
           <a href="#about">About</a>
@@ -110,18 +139,16 @@ export default function Portfolio() {
           <p className="text-xl text-blue-500 mt-3">{typedText}</p>
 
           <div className="mt-6 flex gap-4">
-            {/* ✅ FIX resume path */}
             <a href="/madhuragr.pdf" download className="px-6 py-2 bg-black text-white rounded-full">
-              Resume
+              Download Resume
             </a>
 
             <a href="#contact" className="px-6 py-2 border rounded-full">
-              Contact
+              Contact me
             </a>
           </div>
         </div>
 
-        {/* ✅ FIX image path */}
         <img
           src="/Madhura.jpg"
           alt="profile"
@@ -129,16 +156,28 @@ export default function Portfolio() {
         />
       </section>
 
+      {/* ABOUT */}
+      <section id="about" className="my-14 max-w-3xl">
+        <h2 className="text-3xl font-semibold mb-4">About Me</h2>
+        <p>
+          I am a Computer Science Engineering student passionate about building scalable full-stack applications and integrating AI into real-world solutions.
+        </p>
+      </section>
+
       {/* SKILLS */}
       <section id="skills" className="my-14">
         <h2 className="text-3xl font-semibold mb-6">Skills</h2>
 
         <div className="flex flex-wrap gap-4">
-          {skills.map((skill, i) => (
-            <div key={i} className="flex items-center gap-2 px-4 py-2 border rounded-full">
-              <img src={skill.logo} className="w-5 h-5" alt="" />
+          {skills.map((skill, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.1 }}
+              className="flex items-center gap-2 px-5 py-2 rounded-full border shadow"
+            >
+              <img src={skill.logo} className="w-5 h-5" alt={skill.name} />
               {skill.name}
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -147,17 +186,30 @@ export default function Portfolio() {
       <section id="projects" className="my-14">
         <h2 className="text-3xl font-semibold mb-6">Projects</h2>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {projects.map((p, i) => (
-            <div key={i} className="border p-6 rounded-xl shadow">
-              <h3 className="text-xl font-semibold">{p.title}</h3>
-              <p className="mt-2">{p.description}</p>
+        <div className="flex gap-4 mb-6 flex-wrap">
+          {["All", "Full Stack", "Machine Learning", "AI"].map(category => (
+            <button
+              key={category}
+              onClick={() => setFilter(category)}
+              className="px-4 py-2 border rounded-full"
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
-              <a href={p.github} target="_blank" rel="noreferrer"
-                className="inline-block mt-4 px-4 py-2 bg-black text-white rounded">
+        <div className="grid md:grid-cols-3 gap-6">
+          {filteredProjects.map((project, index) => (
+            <motion.div key={index} whileHover={{ y: -8 }} className="rounded-xl shadow-lg border p-6">
+              <h3 className="text-xl font-semibold">{project.title}</h3>
+              <p className="mt-2">{project.description}</p>
+              <p className="text-sm mt-2">{project.tech}</p>
+
+              <a href={project.github} target="_blank" rel="noreferrer"
+                className="inline-block mt-4 px-4 py-2 bg-black text-white rounded-full">
                 GitHub
               </a>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -169,12 +221,12 @@ export default function Portfolio() {
         <div className="flex gap-6">
           <Mail />
           <a href="https://github.com/madhura-stack">GitHub</a>
-          <a href="https://linkedin.com">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/madhura-g-r-7a0758300">LinkedIn</a>
         </div>
       </section>
 
-      <footer className="text-center py-10">
-        © {new Date().getFullYear()} Madhura
+      <footer className="text-center py-10 opacity-60">
+        © {new Date().getFullYear()} Madhura G R
       </footer>
 
     </div>
