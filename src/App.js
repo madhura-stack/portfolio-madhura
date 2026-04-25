@@ -73,12 +73,7 @@ export default function Portfolio() {
     },
   ];
 
-  const [filter, setFilter] = useState("All");
 
-  const filteredProjects =
-    filter === "All"
-      ? projects
-      : projects.filter(p => p.category === filter);
 
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"} px-6 md:px-24`}>
@@ -153,7 +148,7 @@ export default function Portfolio() {
         <h2 className="text-3xl font-semibold mb-6">Projects</h2>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {filteredProjects.map((p, i) => (
+          {projects.map((p, i) => (
             <div key={i} className="border p-6 rounded-xl shadow">
               <h3 className="text-xl font-semibold">{p.title}</h3>
               <p className="mt-2">{p.description}</p>
