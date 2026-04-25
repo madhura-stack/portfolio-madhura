@@ -269,7 +269,7 @@ export default function Portfolio() {
         <h2 className="text-3xl font-semibold mb-6">Contact</h2>
 
         <div className="flex flex-col gap-2">
-          <p>📧 madhuragr@gmail.com</p>
+          <p>📧 madhuragr21@gmail.com</p>
           <div className="flex gap-6">
             <Mail />
             <a href="https://github.com/madhura-stack">GitHub</a>
